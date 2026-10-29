@@ -39,6 +39,18 @@ class ImmersionThemePlugin extends ThemePlugin
         $this->addStyle('htmlGalley', 'templates/plugins/generic/htmlArticleGalley/css/default.less', ['contexts' => 'htmlGalley']);
 
         // Adding scripts (JQuery, Popper, Bootstrap, JQuery UI, Tag-it, Theme's JS)
+        $this->addScript(
+            'skip-to-js',
+            "var SkipToConfig = {
+                displayOption: 'popup',
+                landmarks: 'main search navigation header footer',
+                headings: 'h1 h2',
+                colorTheme: 'openweba11y',
+                highlightTarget: 'smooth'
+            };",
+            ['inline' => true]
+        );
+
         $this->addScript('app-js', 'resources/dist/app.min.js');
 
         // Add navigation menu areas for this theme
@@ -158,7 +170,6 @@ class ImmersionThemePlugin extends ThemePlugin
             'contexts' => 'backend-manageIssues',
         ]);
         
-        HookRegistry::add('TemplateManager::display', [$this, 'addCustomHeader']);
     }
 
     /**
@@ -544,28 +555,6 @@ class ImmersionThemePlugin extends ThemePlugin
                 ]
             );
         }
-    }
-
-    public function addCustomHeader(string $hookName, array $args)
-    {
-        $templateMgr = $args[0]; /** @var TemplateManager */
-
-        $request = $this->getRequest();
-        $baseUrl = $request->getBaseUrl();
-
-        $templateMgr->addHeader(
-            'skip-to-js',
-            "<script src='{$baseUrl}/plugins/themes/immersion/js/skipto.js'></script>
-            <script>
-            var SkipToConfig =  {
-                displayOption: 'popup',
-                landmarks: 'main search navigation header footer',
-                headings: ' h1 h2',
-                colorTheme: 'openweba11y',
-                highlightTarget: 'smooth'
-            };
-            </script>"
-        );
     }
 
 }
